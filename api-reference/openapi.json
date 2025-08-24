@@ -1,217 +1,776 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Caspen",
+        "version": "0.0.1"
     },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "https:\/\/api.caspen.localhost\/v1"
         }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+    ],
+    "paths": {
+        "\/clients": {
+            "get": {
+                "operationId": "client.index",
+                "tags": [
+                    "Client"
+                ],
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        }
+                    },
+                    {
+                        "name": "order_dir",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "with",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "counts",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "client.store",
+                "tags": [
+                    "Client"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "first_name": {
+                                        "type": "string"
+                                    },
+                                    "last_name": {
+                                        "type": "string"
+                                    },
+                                    "preferred_name": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "profession": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "email": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "email"
+                                    },
+                                    "date_of_birth": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "format": "date-time"
+                                    },
+                                    "sex": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "gender_identity": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "pronouns": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "privacy_policy_consent": {
+                                        "$ref": "#\/components\/schemas\/PrivacyPolicyConsent"
+                                    },
+                                    "emergency_contact_name": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "emergency_contact_phone": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "emergency_contact_relationship": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "notes": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "alert": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ],
+                                        "maxLength": 500
+                                    },
+                                    "referral_type_id": {
+                                        "type": [
+                                            "integer",
+                                            "null"
+                                        ]
+                                    },
+                                    "referral_description": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "referred_by_id": {
+                                        "type": "string"
+                                    },
+                                    "phone_number": {
+                                        "type": [
+                                            "string",
+                                            "null"
+                                        ]
+                                    },
+                                    "intolerances": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "address": {
+                                        "type": "object",
+                                        "properties": {
+                                            "line1": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "line2": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "city": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "state": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "postal_code": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            },
+                                            "country_code": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "tag_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "medications": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "dosage": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "allergies": {
+                                        "type": [
+                                            "array",
+                                            "null"
+                                        ],
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "reaction": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "phone_numbers": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "number": {
+                                                    "type": "string"
+                                                },
+                                                "code": {
+                                                    "type": "string"
+                                                },
+                                                "type": {
+                                                    "type": [
+                                                        "string",
+                                                        "null"
+                                                    ],
+                                                    "enum": [
+                                                        "mobile",
+                                                        "home",
+                                                        "work",
+                                                        "other"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "number",
+                                                "code"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "first_name",
+                                    "last_name"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "`Client`",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Client"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    }
+                }
             }
-          },
-          "required": true
+        },
+        "\/clients\/{client}": {
+            "get": {
+                "operationId": "client.show",
+                "tags": [
+                    "Client"
+                ],
+                "parameters": [
+                    {
+                        "name": "client",
+                        "in": "path",
+                        "required": true,
+                        "description": "The client ID",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "with",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "counts",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`Client`",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/Client"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/ModelNotFoundException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Client": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "account_id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "preferred_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "profession": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "company": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "phone_number": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "date_of_birth": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "sex": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "gender_identity": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "pronouns": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "privacy_policy_consent": {
+                        "anyOf": [
+                            {
+                                "$ref": "#\/components\/schemas\/PrivacyPolicyConsent"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "medications": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "allergies": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "intolerances": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "emergency_contact_name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "emergency_contact_phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "emergency_contact_relationship": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "notes": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "alert": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "balance": {
+                        "type": "integer"
+                    },
+                    "referral_type_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "referral_description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "referred_by_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "referred_by_type": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "stripe_connect_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "xero_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "xero_error": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "date-time"
+                    },
+                    "archived_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "full_name": {
+                        "type": "string"
+                    },
+                    "abs_balance_formatted": {
+                        "type": "string"
+                    },
+                    "balance_formatted": {
+                        "type": "string"
+                    },
+                    "age": {
+                        "type": "string"
+                    },
+                    "initials": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "account_id",
+                    "title",
+                    "first_name",
+                    "last_name",
+                    "preferred_name",
+                    "profession",
+                    "company",
+                    "email",
+                    "phone_number",
+                    "date_of_birth",
+                    "sex",
+                    "gender_identity",
+                    "pronouns",
+                    "privacy_policy_consent",
+                    "medications",
+                    "allergies",
+                    "intolerances",
+                    "emergency_contact_name",
+                    "emergency_contact_phone",
+                    "emergency_contact_relationship",
+                    "notes",
+                    "alert",
+                    "balance",
+                    "referral_type_id",
+                    "referral_description",
+                    "referred_by_id",
+                    "referred_by_type",
+                    "stripe_connect_id",
+                    "xero_id",
+                    "xero_error",
+                    "created_at",
+                    "updated_at",
+                    "archived_at",
+                    "full_name",
+                    "abs_balance_formatted",
+                    "balance_formatted",
+                    "age",
+                    "initials"
+                ],
+                "title": "Client"
+            },
+            "PrivacyPolicyConsent": {
+                "type": "string",
+                "enum": [
+                    "accepted",
+                    "rejected"
+                ],
+                "title": "PrivacyPolicyConsent"
+            }
         },
         "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
+            "AuthenticationException": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+            },
+            "ValidationException": {
+                "description": "Validation error",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Errors overview."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "description": "A detailed description of each field that failed validation.",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "errors"
+                            ]
+                        }
+                    }
                 }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+            },
+            "AuthorizationException": {
+                "description": "Authorization error",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
                 }
-              }
+            },
+            "ModelNotFoundException": {
+                "description": "Not found",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "description": "Error overview."
+                                }
+                            },
+                            "required": [
+                                "message"
+                            ]
+                        }
+                    }
+                }
             }
-          }
         }
-      }
     }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
 }
